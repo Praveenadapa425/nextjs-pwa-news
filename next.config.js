@@ -4,6 +4,15 @@ const withPWA = require("next-pwa")({
   skipWaiting: true,
   clientsClaim: true,
   disable: process.env.NODE_ENV === "development",
+  runtimeCaching: [
+    {
+      urlPattern: /^https?.*/,
+      handler: "StaleWhileRevalidate",
+      options: {
+        cacheName: "http-cache",
+      },
+    },
+  ],
 })
 
 module.exports = withPWA({
