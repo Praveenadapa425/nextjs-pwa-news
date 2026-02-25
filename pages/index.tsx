@@ -10,6 +10,7 @@ export default function Home() {
     fetchTopHeadlines()
       .then((data) => {
         setArticles(data.articles || [])
+        sessionStorage.setItem("articles", JSON.stringify(data.articles))
       })
       .finally(() => setLoading(false))
   }, [])
