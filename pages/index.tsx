@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { fetchTopHeadlines } from "../lib/api"
+import ArticleCard from "../components/ArticleCard"
 
 export default function Home() {
   const [articles, setArticles] = useState<any[]>([])
@@ -21,9 +22,11 @@ export default function Home() {
 
       {!loading &&
         articles.map((article, index) => (
-          <div key={index} className="border p-4 mb-4 rounded shadow">
-            <h2 className="font-semibold">{article.title}</h2>
-          </div>
+          <ArticleCard
+            key={index}
+            article={article}
+            index={index}
+          />
         ))}
     </div>
   )
