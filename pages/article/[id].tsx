@@ -27,8 +27,15 @@ export default function ArticleDetail() {
       <p className="mt-4">{article.content}</p>
       <button
         className="mt-4 bg-green-600 text-white px-4 py-2 rounded"
-        onClick={() => {
-          addBookmark(article)
+        onClick={async () => {
+          await addBookmark(article)
+
+          if ("serviceWorker" in navigator && "sync" in (navigator.serviceWorker as any)) {
+            const reg = await navigator.serviceWorker.ready
+            await (reg as any).sync.register("sync-new-bookmarks")
+            console.log("Sync registered")
+          }
+
           alert("Article saved!")
         }}
       >
