@@ -30,10 +30,16 @@ export default function ArticleDetail() {
         onClick={async () => {
           await addBookmark(article)
 
-          if ("serviceWorker" in navigator && "sync" in (navigator.serviceWorker as any)) {
+          if ("serviceWorker" in navigator) {
             const reg = await navigator.serviceWorker.ready
-            await (reg as any).sync.register("sync-new-bookmarks")
-            console.log("Sync registered")
+            console.log("SW ready:", reg)
+
+            if ("sync" in reg) {
+              await (reg as any).sync.register("sync-new-bookmarks")
+              console.log("Sync registered successfully")
+            } else {
+              console.log("Background sync NOT supported")
+            }
           }
 
           alert("Article saved!")
