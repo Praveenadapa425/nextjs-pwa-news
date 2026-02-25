@@ -1,5 +1,6 @@
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+import { addBookmark } from "../../lib/indexedDb"
 
 export default function ArticleDetail() {
   const router = useRouter()
@@ -24,6 +25,15 @@ export default function ArticleDetail() {
     <div className="p-8">
       <h1 className="text-2xl font-bold">{article.title}</h1>
       <p className="mt-4">{article.content}</p>
+      <button
+        className="mt-4 bg-green-600 text-white px-4 py-2 rounded"
+        onClick={() => {
+          addBookmark(article)
+          alert("Article saved!")
+        }}
+      >
+        Bookmark
+      </button>
     </div>
   )
 }
