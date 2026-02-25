@@ -5,6 +5,16 @@ const withPWA = require("next-pwa")({
   disable: process.env.NODE_ENV === "development",
   runtimeCaching: [
     {
+      urlPattern: ({ request }) => request.mode === "navigate",
+      handler: "NetworkFirst",
+      options: {
+        cacheName: "pages-cache",
+        expiration: {
+          maxEntries: 50,
+        },
+      },
+    },
+    {
       urlPattern: /^https?.*/,
       handler: "StaleWhileRevalidate",
       options: {
