@@ -1,0 +1,15 @@
+node_modules
+.next
+.git
+tests
+.env.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.env.production.local
+.env.test.local
+.cache
+.nyc_output
+coverage
+.reports
+.DS_Store
