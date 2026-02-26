@@ -5,7 +5,7 @@ global.fetch = jest.fn(() =>
     ok: true,
     json: () => Promise.resolve({ articles: [{ title: "Test Article" }] }),
   })
-) as jest.Mock
+) as jest.Mock;
 
 describe("API Service", () => {
   it("fetchTopHeadlines returns data", async () => {

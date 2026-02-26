@@ -5,7 +5,7 @@ module.exports = {
     "^@/(.*)$": "<rootDir>/$1",
   },
   transform: {
-    "^.+\\.(ts|tsx)$": "ts-jest",
+    "^.+\.(js|jsx|ts|tsx)$": "babel-jest",
   },
   testMatch: [
     "**/__tests__/**/*.[jt]s?(x)",
