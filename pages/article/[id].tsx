@@ -7,6 +7,7 @@ export default function ArticleDetail() {
   const { id } = router.query
 
   const [article, setArticle] = useState<any>(null)
+  const [canShare, setCanShare] = useState(false)
 
   useEffect(() => {
     if (!id) return
@@ -18,6 +19,27 @@ export default function ArticleDetail() {
       setArticle(parsed[id as string])
     }
   }, [id])
+
+  useEffect(() => {
+    if (typeof navigator !== "undefined" && "share" in navigator) {
+      setCanShare(true)
+    }
+  }, [])
+
+  const handleShare = async () => {
+    if (!navigator.share) return
+
+    try {
+      await navigator.share({
+        title: article.title,
+        text: article.description,
+        url: window.location.href,
+      })
+      console.log("Shared successfully")
+    } catch (error) {
+      console.log("Share cancelled or failed", error)
+    }
+  }
 
   if (!article) return <p className="p-6">Loading...</p>
 
@@ -47,6 +69,16 @@ export default function ArticleDetail() {
       >
         Bookmark
       </button>
+      
+      {canShare && (
+        <button
+          data-testid="web-share-button"
+          onClick={handleShare}
+          className="mt-3 bg-blue-600 text-white px-4 py-2 rounded"
+        >
+          Share Article
+        </button>
+      )}
     </div>
   )
 }
