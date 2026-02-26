@@ -1,5 +1,6 @@
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+import Head from "next/head"
 import { addBookmark } from "../../lib/indexedDb"
 
 export default function ArticleDetail() {
@@ -44,41 +45,47 @@ export default function ArticleDetail() {
   if (!article) return <p className="p-6">Loading...</p>
 
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold">{article.title}</h1>
-      <p className="mt-4">{article.content}</p>
-      <button
-        className="mt-4 bg-green-600 text-white px-4 py-2 rounded"
-        onClick={async () => {
-          await addBookmark(article)
-
-          if ("serviceWorker" in navigator) {
-            const reg = await navigator.serviceWorker.ready
-            console.log("SW ready:", reg)
-
-            if ("sync" in reg) {
-              await (reg as any).sync.register("sync-new-bookmarks")
-              console.log("Sync registered successfully")
-            } else {
-              console.log("Background sync NOT supported")
-            }
-          }
-
-          alert("Article saved!")
-        }}
-      >
-        Bookmark
-      </button>
-      
-      {canShare && (
+    <>
+      <Head>
+        <title>{article.title}</title>
+        <meta name="description" content={article.description || ""} />
+      </Head>
+      <div className="p-8">
+        <h1 className="text-2xl font-bold">{article.title}</h1>
+        <p className="mt-4">{article.content}</p>
         <button
-          data-testid="web-share-button"
-          onClick={handleShare}
-          className="mt-3 bg-blue-600 text-white px-4 py-2 rounded"
+          className="mt-4 bg-green-600 text-white px-4 py-2 rounded"
+          onClick={async () => {
+            await addBookmark(article)
+
+            if ("serviceWorker" in navigator) {
+              const reg = await navigator.serviceWorker.ready
+              console.log("SW ready:", reg)
+
+              if ("sync" in reg) {
+                await (reg as any).sync.register("sync-new-bookmarks")
+                console.log("Sync registered successfully")
+              } else {
+                console.log("Background sync NOT supported")
+              }
+            }
+
+            alert("Article saved!")
+          }}
         >
-          Share Article
+          Bookmark
         </button>
-      )}
-    </div>
+        
+        {canShare && (
+          <button
+            data-testid="web-share-button"
+            onClick={handleShare}
+            className="mt-3 bg-blue-600 text-white px-4 py-2 rounded"
+          >
+            Share Article
+          </button>
+        )}
+      </div>
+    </>
   )
 }
