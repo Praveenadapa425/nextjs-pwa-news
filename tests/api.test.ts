@@ -1,15 +1,17 @@
 import { fetchTopHeadlines } from "../lib/api"
 
-global.fetch = jest.fn(() =>
-  Promise.resolve({
-    ok: true,
-    json: () => Promise.resolve({ articles: [{ title: "Test Article" }] }),
-  })
-) as jest.Mock;
-
 describe("API Service", () => {
-  it("fetchTopHeadlines returns data", async () => {
+  it("fetchTopHeadlines returns data structure", async () => {
     const data = await fetchTopHeadlines()
-    expect(data.articles[0].title).toBe("Test Article")
+    expect(data).toHaveProperty('articles')
+    expect(Array.isArray(data.articles)).toBe(true)
+    expect(data.articles.length).toBeGreaterThan(0)
+    expect(data.articles[0]).toHaveProperty('title')
+    expect(data.articles[0]).toHaveProperty('description')
+  })
+  
+  it("returns mock data when no API configured", async () => {
+    const data = await fetchTopHeadlines()
+    expect(data.articles[0].title).toContain("PWA News App")
   })
 })
