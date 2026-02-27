@@ -1,5 +1,6 @@
 import Link from "next/link"
 import LazyImage from "./LazyImage"
+import { addBookmark } from "../lib/indexedDb"
 
 interface ArticleCardProps {
   article: any
@@ -7,6 +8,19 @@ interface ArticleCardProps {
 }
 
 export default function ArticleCard({ article, index }: ArticleCardProps) {
+  const handleBookmark = async () => {
+    await addBookmark(article)
+    
+    if ("serviceWorker" in navigator) {
+      const reg = await navigator.serviceWorker.ready
+      if ("sync" in reg) {
+        await (reg as any).sync.register("sync-new-bookmarks")
+      }
+    }
+    
+    alert("Article bookmarked!")
+  }
+
   return (
     <div className="border p-4 mb-4 rounded shadow">
       {article.urlToImage && (
@@ -25,11 +39,22 @@ export default function ArticleCard({ article, index }: ArticleCardProps) {
         </p>
       )}
 
-      <Link href={`/article/${index}`}>
-        <button className="mt-3 bg-blue-500 text-white px-3 py-1 rounded">
-          Read More
+      <div className="flex gap-2">
+        <button
+          data-testid="bookmark-button"
+          className="mt-3 bg-green-600 text-white px-3 py-1 rounded"
+          aria-label={`Bookmark article: ${article.title}`}
+          onClick={handleBookmark}
+        >
+          Bookmark
         </button>
-      </Link>
+        
+        <Link href={`/article/${index}`}>
+          <button className="mt-3 bg-blue-500 text-white px-3 py-1 rounded">
+            Read More
+          </button>
+        </Link>
+      </div>
     </div>
   )
 }
