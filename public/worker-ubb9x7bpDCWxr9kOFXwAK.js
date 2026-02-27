@@ -1,0 +1,1 @@
+self.addEventListener("push",function(e){console.log("Push event received:",e);const n=e.data?e.data.text():"Default push message";e.waitUntil(self.registration.showNotification("PWA News",{body:n,icon:"/icons/icon-192.png",badge:"/icons/icon-192.png",vibrate:[100,50,100]}))});

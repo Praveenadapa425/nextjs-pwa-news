@@ -3,6 +3,7 @@ import { fetchTopHeadlines } from "../lib/api"
 import ArticleCard from "../components/ArticleCard"
 import LazyImage from "../components/LazyImage"
 import Head from "next/head"
+import Link from "next/link"
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4)
@@ -92,7 +93,14 @@ export default function Home() {
         )}
       </Head>
       <div className="p-8">
-        <h1 className="text-3xl font-bold mb-6">PWA News</h1>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold">PWA News</h1>
+          <Link href="/bookmarks">
+            <button className="bg-orange-500 text-white px-4 py-2 rounded">
+              View Bookmarks
+            </button>
+          </Link>
+        </div>
         
         <button
           data-testid="subscribe-push-button"
