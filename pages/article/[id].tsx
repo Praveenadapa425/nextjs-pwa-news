@@ -54,6 +54,7 @@ export default function ArticleDetail() {
         <h1 className="text-2xl font-bold">{article.title}</h1>
         <p className="mt-4">{article.content}</p>
         <button
+          data-testid="bookmark-button"
           className="mt-4 bg-green-600 text-white px-4 py-2 rounded"
           aria-label={`Bookmark article: ${article.title}`}
           onClick={async () => {
